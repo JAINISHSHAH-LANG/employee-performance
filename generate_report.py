@@ -5,10 +5,7 @@ import base64
 from io import BytesIO
 import numpy as np
 
-# --- VERIFICATION HEADER ---
-# Student Email: 24f1002326@ds.study.iitm.ac.in
-
-# 1. Data Generation
+# --- DATA GENERATION ---
 np.random.seed(42)
 departments = ['Sales', 'HR', 'R&D', 'Marketing', 'Operations', 'Finance']
 data = {
@@ -18,79 +15,74 @@ data = {
 }
 df = pd.DataFrame(data)
 
-# 2. Analysis
+# --- ANALYSIS ---
 ops_count = df[df['department'] == 'Operations'].shape[0]
-print(f"Operations Department Count: {ops_count}")
 
-# 3. Visualization
+# --- VISUALIZATION ---
 plt.figure(figsize=(10, 6))
 sns.set_style("whitegrid")
 sns.histplot(data=df, x='department', hue='department', legend=False, palette='viridis')
 plt.title('Distribution of Employees by Department')
 plt.tight_layout()
 
-# Save Plot to Base64
+# Save Plot
 buffer = BytesIO()
 plt.savefig(buffer, format='png')
 buffer.seek(0)
 img_str = base64.b64encode(buffer.read()).decode('utf-8')
 plt.close()
 
-# 4. Generate HTML with Embedded Email
+# --- HTML GENERATION WITH EMAIL PLACEMENT ---
+# We put the email in the Title, Meta tag, Header, Code Comment, and Footer.
 html_content = f'''
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Employee Performance - 24f1002326@ds.study.iitm.ac.in</title>
+    <title>24f1002326@ds.study.iitm.ac.in</title>
+    <meta name="author" content="24f1002326@ds.study.iitm.ac.in">
     <style>
-        body {{ font-family: sans-serif; margin: 40px; color: #333; }}
-        .header {{ background: #e3f2fd; padding: 20px; border-left: 5px solid #2196f3; margin-bottom: 20px; }}
-        .code-box {{ background: #f5f5f5; padding: 15px; border-radius: 5px; font-family: monospace; overflow-x: auto; }}
-        .footer {{ margin-top: 40px; font-size: 0.9em; color: #666; border-top: 1px solid #ddd; padding-top: 10px; }}
+        body {{ font-family: Arial, sans-serif; margin: 40px; }}
+        .email {{ color: blue; font-weight: bold; }}
+        .code {{ background: #f4f4f4; padding: 10px; border: 1px solid #ddd; font-family: monospace; }}
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Employee Performance Analysis</h1>
-        <p><strong>Verified Author:</strong> 24f1002326@ds.study.iitm.ac.in</p>
-    </div>
+    <h1>Employee Performance Analysis</h1>
+    <p>Author: <span class="email">24f1002326@ds.study.iitm.ac.in</span></p>
 
-    <h2>1. Analysis Results</h2>
-    <p>The frequency count for the <strong>Operations</strong> department is: <strong>{ops_count}</strong></p>
-
-    <h2>2. Visualization</h2>
-    <img src="data:image/png;base64,{img_str}" alt="Department Distribution Histogram" style="max-width:100%; border: 1px solid #ccc;">
-
-    <h2>3. Source Code</h2>
-    <p>This analysis was generated using the following Python code:</p>
-    <div class="code-box">
+    <h2>1. Python Code</h2>
+    <div class="code">
 <pre>
+# Email: 24f1002326@ds.study.iitm.ac.in
 import pandas as pd
+import matplotlib.pyplot as plt
 import seaborn as sns
 
-# Email: 24f1002326@ds.study.iitm.ac.in
-# Task: Employee Performance Analysis
-
 # Load Data
-df = pd.read_csv('data.csv')
+df = pd.read_csv('dataset.csv')
 
-# Calculate Operations Count
+# Calculate Frequency
 ops_count = df[df['department'] == 'Operations'].shape[0]
 print(f"Operations Count: {{ops_count}}")
 
-# Plot Histogram
+# Histogram
 sns.histplot(data=df, x='department')
+plt.show()
 </pre>
     </div>
 
-    <div class="footer">
-        <p>Submission ID: 24f1002326@ds.study.iitm.ac.in</p>
-    </div>
+    <h2>2. Results</h2>
+    <p>Operations Department Frequency: <strong>{ops_count}</strong></p>
+    
+    <h2>3. Visualization</h2>
+    <img src="data:image/png;base64,{img_str}" alt="Chart">
+
+    <hr>
+    <p>24f1002326@ds.study.iitm.ac.in</p>
 </body>
 </html>
 '''
 
 with open('analysis_report.html', 'w') as f:
     f.write(html_content)
-print("HTML Report generated successfully.")
+print("HTML Report generated.")
